@@ -3,6 +3,7 @@ import math
 def main(input_file_name="testcase.txt", output_file_name="output.txt"):
     city_scores = {}
     
+    
     with open(input_file_name, "r") as input_file:
         for line in input_file:
             city, score = line.strip().split(";")
