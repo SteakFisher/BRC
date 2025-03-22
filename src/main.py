@@ -1,23 +1,32 @@
 import math
+import sys
 
 def main(input_file_name="testcase.txt", output_file_name="output.txt"):
     city_stats = {}
     
     with open(input_file_name, "r") as input_file:
         for line in input_file:
-            city, score_str = line.strip().split(";")
-            score = float(score_str)
+            idx = line.find(";")
+            city = line[:idx]
+            score = float(line[idx+1:].strip())
             if city in city_stats:
-                curr_min, curr_sum, curr_max, count = city_stats[city]
-                city_stats[city] = (min(curr_min, score), curr_sum + score, max(curr_max, score), count + 1)
+                stats = city_stats[city]
+                stats[0] = min(stats[0], score)
+                stats[1] += score
+                stats[2] = max(stats[2], score)
+                stats[3] += 1
             else:
-                city_stats[city] = (score, score, score, 1)
+                city_stats[city] = [score, score, score, 1]
     
     output_lines = []
-    for city in sorted(city_stats):
-        min_score, total_sum, max_score, count = city_stats[city]
+    for city in sorted(city_stats.keys()):
+        stats = city_stats[city]
+        min_score = stats[0]
+        total_sum = stats[1]
+        max_score = stats[2]
+        count = stats[3]
         mean_score = math.ceil((total_sum / count) * 10) / 10
-        output_lines.append("%s=%.1f/%.1f/%.1f" % (city, min_score, mean_score, max_score))
+        output_lines.append(f"{city}={min_score:.1f}/{mean_score:.1f}/{max_score:.1f}")
     
     with open(output_file_name, "w") as output_file:
         output_file.write("\n".join(output_lines) + "\n")
