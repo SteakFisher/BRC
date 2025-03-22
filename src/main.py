@@ -1,20 +1,22 @@
 import math
+import csv
 import sys
 
 def main(input_file_name="testcase.txt", output_file_name="output.txt"):
     city_stats = {}
     
     with open(input_file_name, "r") as input_file:
-        for line in input_file:
-            idx = line.find(";")
-            city = line[:idx]
-            score = float(line[idx+1:].strip())
+        reader = csv.reader(input_file, delimiter=";")
+        for row in reader:
+            city, score_str = row
+            city = sys.intern(city) 
+            score = float(score_str) 
             if city in city_stats:
                 stats = city_stats[city]
                 stats[0] = min(stats[0], score)
-                stats[1] += score
-                stats[2] = max(stats[2], score)
-                stats[3] += 1
+                stats[1] += score              
+                stats[2] = max(stats[2], score)  
+                stats[3] += 1                
             else:
                 city_stats[city] = [score, score, score, 1]
     
