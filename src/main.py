@@ -21,7 +21,7 @@ def main():
     output_lines = []
     for city in sorted(city_stats.keys()):
         min_score, total_sum, max_score, count = city_stats[city]
-        mean_score = math.ceil((total_sum / count) * 10) / 10 
+        mean_score = math.ceil((total_sum / count) * 10) / 10  # Rounded to 1 decimal
         output_lines.append(f"{city}={min_score:.1f}/{mean_score:.1f}/{max_score:.1f}")
     
     sys.stdout.write("\n".join(output_lines) + "\n")
